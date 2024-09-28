@@ -1,5 +1,17 @@
 # Todo app using different state management libraries and the feature sliced design (FSD) architecture
 
+## State management 
+The ones with branch links are the state management solutions I have used for this project.
+- Redux
+- Recoil
+- MobX
+- Zustand
+- Jotai
+- Rematch
+- Hookstate
+- useReducer
+- useState [branch](https://github.com/d-a-ve/todo-app-with-different-state-management-and-fsd-architecture/tree/main)
+
 ## Folders description
 
 | Folder       | Description        |

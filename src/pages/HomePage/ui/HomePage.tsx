@@ -32,6 +32,25 @@ export const HomePage = () => {
 		)
 	}
 
+	const updateTodoStatus = (isChecked: boolean, todo: Todo) => {
+		setTodos((prev) =>
+			prev.map((prevTodo) =>
+				prevTodo.title === todo.title
+					? {
+							...prevTodo,
+							status: isChecked
+								? TODO_STATUS.COMPLETED
+								: TODO_STATUS.NOT_STARTED,
+						}
+					: prevTodo,
+			),
+		)
+	}
+
+	const deleteTodo = (todo: Todo) => {
+		setTodos((prev) => prev.filter((prevTodo) => prevTodo.title !== todo.title))
+	}
+
 	return (
 		<MaxContainer>
 			<InlinePaddingContainer className="max-w-3xl mx-auto py-6 space-y-6">
@@ -76,7 +95,8 @@ export const HomePage = () => {
 					)}
 					{todos.length > 0 &&
 						todos.map((todo) => {
-							const isTodoCompleted = todo.status === "completed"
+							const isTodoCompleted = todo.status === "completed";
+
 							return (
 								<article
 									className="flex gap-3 items-start bg-blue-50/40 p-4 rounded-md"
@@ -89,18 +109,7 @@ export const HomePage = () => {
 											checked={isTodoCompleted}
 											value={todo.status}
 											onChange={(e) => {
-												setTodos((prev) =>
-													prev.map((prevTodo) =>
-														prevTodo.title === todo.title
-															? {
-																	...prevTodo,
-																	status: e.target.checked
-																		? TODO_STATUS.COMPLETED
-																		: TODO_STATUS.NOT_STARTED,
-																}
-															: prevTodo,
-													),
-												)
+												updateTodoStatus(e.target.checked, todo)
 											}}
 										/>
 									</div>
@@ -129,16 +138,9 @@ export const HomePage = () => {
 												}
 												defaultTodo={todo}
 											/>
-
 											<button
 												className="border border-gray-200 py-1 px-3 rounded-md text-xs hover:bg-white duration-150 text-red-500"
-												onClick={() =>
-													setTodos((prev) =>
-														prev.filter(
-															(prevTodo) => prevTodo.title !== todo.title,
-														),
-													)
-												}
+												onClick={() => deleteTodo(todo)}
 											>
 												<span className="max-xs:hidden">Delete</span>
 												<TrashIcon className="size-5 xs:hidden" />

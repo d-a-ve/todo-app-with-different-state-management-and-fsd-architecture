@@ -1,4 +1,3 @@
-import type { Todo } from "../types"
 import type { FormEvent, ReactNode } from "react"
 
 import { useCallback, useState } from "react"
@@ -13,6 +12,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@shared/ui/Dialog"
+import type { TodoData } from "../types"
 
 const DEFAULT_TODO = {
 	title: "",
@@ -27,8 +27,8 @@ export function TodoFormDialog({
 }: {
 	trigger: ReactNode
 	title: string
-	defaultTodo?: Omit<Todo, "status">
-	onSubmit: (todo: Omit<Todo, "status">) => void
+	defaultTodo?: TodoData
+	onSubmit: (todo: TodoData) => void
 }) {
 	const [open, setOpen] = useState(false)
 	const [titleError, setTitleError] = useState<string | null>(null)

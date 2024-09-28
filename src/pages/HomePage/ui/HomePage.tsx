@@ -1,55 +1,15 @@
-import type { Todo } from "../types"
-
 import { Pencil2Icon, TrashIcon } from "@radix-ui/react-icons"
-import { useEffect, useState } from "react"
 
 import { cn } from "@shared/lib/utils"
 import { Button } from "@shared/ui/Button"
 import { InlinePaddingContainer, MaxContainer } from "@shared/ui/Container"
 
-import { TODO_STATUS } from "../constants"
-import { addTodoToStorage, getTodosFromStorage } from "../lib/utils"
+import { useTodos } from "../model/useTodos"
 import { TodoFormDialog } from "./TodoFormDialog"
 
 export const HomePage = () => {
-	const [todos, setTodos] = useState<Todo[]>(getTodosFromStorage)
-
-	useEffect(() => {
-		addTodoToStorage(todos)
-	}, [todos])
-
-	const addTodo = (todo: Omit<Todo, "status">) => {
-		setTodos((prev) => [...prev, { ...todo, status: TODO_STATUS.NOT_STARTED }])
-	}
-
-	const updateTodo = (updatedTodo: Omit<Todo, "status">, todo: Todo) => {
-		setTodos((prev) =>
-			prev.map((prevTodo) =>
-				prevTodo.title === todo.title
-					? { ...prevTodo, ...updatedTodo }
-					: prevTodo,
-			),
-		)
-	}
-
-	const updateTodoStatus = (isChecked: boolean, todo: Todo) => {
-		setTodos((prev) =>
-			prev.map((prevTodo) =>
-				prevTodo.title === todo.title
-					? {
-							...prevTodo,
-							status: isChecked
-								? TODO_STATUS.COMPLETED
-								: TODO_STATUS.NOT_STARTED,
-						}
-					: prevTodo,
-			),
-		)
-	}
-
-	const deleteTodo = (todo: Todo) => {
-		setTodos((prev) => prev.filter((prevTodo) => prevTodo.title !== todo.title))
-	}
+	const { todos, addTodo, updateTodo, updateTodoStatus, deleteTodo } =
+		useTodos()
 
 	return (
 		<MaxContainer>
@@ -95,12 +55,12 @@ export const HomePage = () => {
 					)}
 					{todos.length > 0 &&
 						todos.map((todo) => {
-							const isTodoCompleted = todo.status === "completed";
+							const isTodoCompleted = todo.status === "completed"
 
 							return (
 								<article
 									className="flex gap-3 items-start bg-blue-50/40 p-4 rounded-md"
-									key={todo.title}
+									key={todo.id}
 								>
 									<div className="size-4 shrink-0">
 										<input
@@ -109,7 +69,7 @@ export const HomePage = () => {
 											checked={isTodoCompleted}
 											value={todo.status}
 											onChange={(e) => {
-												updateTodoStatus(e.target.checked, todo)
+												updateTodoStatus(e.target.checked, todo.id)
 											}}
 										/>
 									</div>
@@ -134,13 +94,13 @@ export const HomePage = () => {
 												}
 												title="Edit Todo"
 												onSubmit={(updatedTodo) =>
-													updateTodo(updatedTodo, todo)
+													updateTodo(updatedTodo, todo.id)
 												}
 												defaultTodo={todo}
 											/>
 											<button
 												className="border border-gray-200 py-1 px-3 rounded-md text-xs hover:bg-white duration-150 text-red-500"
-												onClick={() => deleteTodo(todo)}
+												onClick={() => deleteTodo(todo.id)}
 											>
 												<span className="max-xs:hidden">Delete</span>
 												<TrashIcon className="size-5 xs:hidden" />

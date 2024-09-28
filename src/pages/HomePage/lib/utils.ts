@@ -8,3 +8,7 @@ export function getTodosFromStorage(): Todo[] {
   const todos = localStorage.getItem("todos");
   return todos ? JSON.parse(todos) : [];
 }
+
+export function id() {
+  return new Date().toUTCString()
+}

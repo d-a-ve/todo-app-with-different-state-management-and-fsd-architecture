@@ -12,7 +12,7 @@ import {
 	DialogFooter,
 	DialogTitle,
 	DialogTrigger,
-} from "@shared/ui/dialog"
+} from "@shared/ui/Dialog"
 
 const DEFAULT_TODO = {
 	title: "",

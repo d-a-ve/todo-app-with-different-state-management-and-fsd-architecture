@@ -1,17 +1,22 @@
 import type { Todo } from "../types"
 
 import { Pencil2Icon, TrashIcon } from "@radix-ui/react-icons"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { cn } from "@shared/lib/utils"
 import { Button } from "@shared/ui/Button"
 import { InlinePaddingContainer, MaxContainer } from "@shared/ui/Container"
 
 import { TODO_STATUS } from "../constants"
+import { addTodoToStorage, getTodosFromStorage } from "../lib/utils"
 import { TodoFormDialog } from "./TodoFormDialog"
 
 export const HomePage = () => {
-	const [todos, setTodos] = useState<Todo[]>([])
+	const [todos, setTodos] = useState<Todo[]>(getTodosFromStorage)
+
+	useEffect(() => {
+		addTodoToStorage(todos)
+	}, [todos])
 
 	const addTodo = (todo: Omit<Todo, "status">) => {
 		setTodos((prev) => [...prev, { ...todo, status: TODO_STATUS.NOT_STARTED }])

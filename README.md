@@ -9,7 +9,7 @@ The ones with branch links are the state management solutions I have used for th
 - Jotai
 - Rematch
 - Hookstate
-- useReducer
+- useReducer [branch](https://github.com/d-a-ve/todo-app-with-different-state-management-and-fsd-architecture/tree/useReducer)
 - useState [branch](https://github.com/d-a-ve/todo-app-with-different-state-management-and-fsd-architecture/tree/main)
 
 ## Folders description
